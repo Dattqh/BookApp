@@ -97,7 +97,7 @@ fun BookCard(book: Book, onClick: () -> Unit) {
     ) {
         Column {
             Image(
-                painter = rememberAsyncImagePainter(book.coverUrl),
+                painter = rememberAsyncImagePainter(book.coverImageUrl),
                 contentDescription = book.title,
                 modifier = Modifier
                     .height(200.dp)
@@ -132,7 +132,7 @@ fun BookItem(book: Book, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = rememberAsyncImagePainter(book.coverUrl),
+                painter = rememberAsyncImagePainter(book.coverImageUrl),
                 contentDescription = book.title,
                 modifier = Modifier
                     .size(80.dp)

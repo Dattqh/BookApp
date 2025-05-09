@@ -73,4 +73,24 @@ router.post('/verify-token', async (req, res) => {
   }
 });
 
+// Registration endpoint
+router.post('/register', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const existing = await Admin.findOne({ email });
+    if (existing) return res.status(400).json({ error: 'Email already exists' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const admin = new Admin({
+      email,
+      password: hashedPassword,
+      isVerified: true
+    });
+    await admin.save();
+    res.json({ message: 'Registration successful' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

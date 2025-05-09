@@ -5,14 +5,16 @@ const cors = require('cors');
 const Admin = require('./models/Admin');
 const Book = require('./models/Book'); 
 const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
 
 
 const app = express();
+
+// === MIDDLEWARE ===
 app.use(cors());
 app.use(express.json());
 
 // === ROUTES ===
+app.use('/api/auth', authRoutes);
 
 // GET tất cả sách
 app.get('/books', async (req, res) => {
@@ -103,6 +105,6 @@ mongoose.connect('mongodb://localhost:27017/BookApp', {
 .catch((err) => console.log('❌ MongoDB connection error:', err));
 
 // === START SERVER ===
-app.listen(3000, () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log('🚀 Server running on http://localhost:3000');
 });

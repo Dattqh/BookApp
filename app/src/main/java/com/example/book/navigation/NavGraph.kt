@@ -8,9 +8,19 @@ import com.example.book.screens.*
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") {
-            HomeScreen(navController)
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+            SplashScreen(onGetStartedClick = {
+                navController.navigate("login") {
+                    popUpTo("splash") { inclusive = true } // tránh quay lại splash
+                }
+            })
+        }
+        composable("login") {
+            LoginScreen(navController) // đảm bảo bạn có màn này
+        }
+        composable("registration") {
+            RegistrationScreen(navController)
         }
         composable("favorite") {
             FavoriteScreen(navController)
