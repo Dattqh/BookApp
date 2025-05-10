@@ -1,6 +1,8 @@
 package com.example.book.network
 
 import com.example.book.model.Book
+import com.example.book.model.LoginRequest
+import com.example.book.model.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,4 +19,8 @@ interface ApiService {
 
     @POST("books")
     suspend fun addBook(@Body book: Book): Response<Unit>
+
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginRequest): LoginResponse
+
 }

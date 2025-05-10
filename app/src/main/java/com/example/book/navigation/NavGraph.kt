@@ -5,35 +5,69 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.book.screens.*
+import com.example.book.viewmodel.LoginViewModel
+import com.example.book.viewmodel.RegistrationViewModel
+import org.koin.androidx.compose.koinViewModel
+
+sealed class Screen(val route: String) {
+    object Splash : Screen("splash")
+    object Login : Screen("login")
+    object Register : Screen("registration")
+    object Main : Screen("main")
+    object Favorite : Screen("favorite")
+    object Profile : Screen("profile")
+    object Reading : Screen("reading")
+    object BookDetail : Screen("book_detail/{bookId}") {
+        fun createRoute(bookId: String) = "book_detail/$bookId"
+    }
+}
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "splash") {
-        composable("splash") {
+    NavHost(navController = navController, startDestination = "home") {
+        composable(Screen.Splash.route) {
             SplashScreen(onGetStartedClick = {
-                navController.navigate("login") {
-                    popUpTo("splash") { inclusive = true } // tránh quay lại splash
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Splash.route) { inclusive = true }
                 }
             })
         }
-        composable("login") {
-            LoginScreen(navController) // đảm bảo bạn có màn này
+
+        composable(Screen.Login.route) {
+            val viewModel: LoginViewModel = koinViewModel()
+            LoginScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
-        composable("registration") {
-            RegistrationScreen(navController)
+
+        composable(Screen.Register.route) {
+            val viewModel: RegistrationViewModel = koinViewModel()
+            RegistrationScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
-        composable("favorite") {
+
+        composable(Screen.Favorite.route) {
             FavoriteScreen(navController)
         }
-        composable("profile") {
+
+        composable(Screen.Profile.route) {
             ProfileScreen(navController)
         }
-        composable("reading") {
+
+        composable(Screen.Reading.route) {
             ReadingScreen(navController)
         }
-        composable("book_detail/{bookId}") { backStackEntry ->
+
+        composable(Screen.BookDetail.route) { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
             BookDetailScreen(bookId = bookId)
+        }
+
+        composable("home") {
+            HomeScreen()
         }
     }
 }

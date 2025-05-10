@@ -5,6 +5,7 @@ const cors = require('cors');
 const Admin = require('./models/Admin');
 const Book = require('./models/Book'); 
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/adminRoutes');
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // === ROUTES ===
 app.use('/api/auth', authRoutes);
+app.use('/api/auth', adminRoutes);
 
 // GET tất cả sách
 app.get('/books', async (req, res) => {

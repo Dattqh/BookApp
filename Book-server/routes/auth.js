@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'dattqh.lms@gmail.com', // 🔒 Gmail của bạn
-    pass: 'Dat123'     // 🔐 App password (không phải mật khẩu Gmail thường)
+    pass: 'Dat12345'     // 🔐 App password (không phải mật khẩu Gmail thường)
   }
 });
 
@@ -75,17 +75,31 @@ router.post('/verify-token', async (req, res) => {
 
 // Registration endpoint
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { fullName, email, password } = req.body;
+  
   try {
-    const existing = await Admin.findOne({ email });
-    if (existing) return res.status(400).json({ error: 'Email already exists' });
+    // Validate input
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
 
+    // Check if email already exists
+    const existing = await Admin.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new admin
     const admin = new Admin({
+      fullName,
       email,
       password: hashedPassword,
-      isVerified: true
+      isVerified: true // Set to true if you don't want email verification
     });
+
     await admin.save();
     res.json({ message: 'Registration successful' });
   } catch (err) {
