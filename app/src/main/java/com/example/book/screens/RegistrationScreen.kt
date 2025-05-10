@@ -272,14 +272,21 @@ fun RegistrationScreen(
             
             Row(
                 modifier = Modifier.padding(top = 16.dp),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Đã có tài khoản? ")
                 TextButton(
                     onClick = { navController.navigate("login") },
                     enabled = !isLoading
                 ) {
                     Text("Đăng nhập", color = Color(0xFF8A956E))
+                }
+                Text(" | ", color = Color.Gray)
+                TextButton(
+                    onClick = { navController.navigate("login") },
+                    enabled = !isLoading
+                ) {
+                    Text("Đã có tài khoản", color = Color(0xFF8A956E))
                 }
             }
         }

@@ -20,7 +20,6 @@ interface ApiService {
     @POST("books")
     suspend fun addBook(@Body book: Book): Response<Unit>
 
-    @POST("auth/login")
-    suspend fun login(@Body request: LoginRequest): LoginResponse
-
+    @POST("login")
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 }

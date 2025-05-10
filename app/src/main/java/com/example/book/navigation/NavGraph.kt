@@ -24,7 +24,7 @@ sealed class Screen(val route: String) {
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(onGetStartedClick = {
                 navController.navigate(Screen.Login.route) {
